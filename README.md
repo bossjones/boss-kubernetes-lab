@@ -9,6 +9,9 @@ learning kubernetes
 $ brew cask install minikube
 $ brew cask install virtualbox
 $ brew install kubernetes-helm
+
+# autocompletion
+$ minikube completion bash > /usr/local/etc/bash_completion.d/minikube-completion
 ```
 
 ### VMware Fusion commandline tools
@@ -58,7 +61,7 @@ source <(helm completion bash)
 
 ```
 # start up minikube
-minikube start --vm-driver="vmware" --cpus=4 --memory=6000 --v=7 --extra-config=apiserver.Authorization.Mode=RBAC --alsologtostderr
+minikube start --vm-driver="vmwarefusion" --cpus=4 --memory=6000 --v=7 --extra-config=apiserver.Authorization.Mode=RBAC --alsologtostderr
 
 # See which subjects a cluster role is applied
 kubectl get clusterrolebindings system:node --all-namespaces -o json
@@ -229,6 +232,18 @@ ClusterRole/system:discovery
 $ getRoles ServiceAccount attachdetach-controller kube-system
 ClusterRole/system:controller:attachdetach-controller
 ```
+
+# Must read
+* Kubernetes Concepts: https://kubernetes.io/docs/concepts/
+* K8 core resources and operations: https://kubernetes.io/docs/concepts/overview/kubernetes-api/
+* Pods: https://kubernetes.io/docs/concepts/workloads/pods/pod/
+* Deployments: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+* Namespaces: https://kubernetes.io/docs/user-guide/namespaces/
+* Secrets: https://kubernetes.io/docs/concepts/configuration/secret/
+* Replicasets: https://kubernetes.io/docs/user-guide/replicasets/
+* PersistentVolumes: https://kubernetes.io/docs/concepts/storage/volumes/
+* ConfigMaps: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+* Nodes: https://kubernetes.io/docs/concepts/architecture/nodes/
 
 
 # Resources:
