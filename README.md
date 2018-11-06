@@ -1,6 +1,234 @@
 # boss-kubernetes-lab
 learning kubernetes
 
+# Getting started
+
+### Now that we have Homebrew installed, lets get Minikube, Virtualbox and Helm situated.
+
+```
+$ brew cask install minikube
+$ brew cask install virtualbox
+$ brew install kubernetes-helm
+```
+
+### VMware Fusion commandline tools
+
+```
+# VMware Fusion command-line utils
+export PATH=$PATH:"/Applications/VMware Fusion.app/Contents/Library"
+```
+
+Test it by running
+
+```
+➜  ~ vmrun list
+Total running VMs: 1
+/Users/me/.minikube/machines/minikube/minikube.vmx
+
+
+➜  ~ vmrun listNetworkAdapters /Users/me/.minikube/machines/minikube/minikube.vmx
+Total network adapters: 1
+INDEX  TYPE         VMNET
+0      nat          vmnet8
+
+
+➜  ~ vmrun listPortForwardings vmnet8
+Total port forwardings: 0
+```
+
+Configure docker environment
+
+```
+eval $(minikube docker-env)
+```
+
+# Kubernetes Dashboard
+
+`minikube dashboard`
+
+
+# Autocompletions
+
+```
+source <(kubectl completion bash)
+source <(helm completion bash)
+```
+
+# Create minikube server
+
+```
+# start up minikube
+minikube start --vm-driver="vmware" --cpus=4 --memory=6000 --v=7 --extra-config=apiserver.Authorization.Mode=RBAC --alsologtostderr
+
+# See which subjects a cluster role is applied
+kubectl get clusterrolebindings system:node --all-namespaces -o json
+
+# Show Merged kubeconfig settings.
+kubectl config view
+
+
+# Display the current-context
+kubectl config current-context
+
+
+# Many add-ons currently run as the “default” service account in the kube-system namespace. To allow those add-ons to run with super-user access, grant cluster-admin permissions to the “default” service account in the kube-system namespace.
+
+# NOTE:  Enabling this means the kube-system namespace contains secrets that grant super-user access to the API. (3rd most secure option)
+kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
+
+
+# OPTION 2 ( strongly discouraged )
+# NOTE: This allows any user with read access
+to secrets or the ability to create a pod to access super-user
+credentials.
+# WARNING: ONLY RUN THIS IF YOU KNOW WHAT YOU ARE DOING
+# kubectl create clusterrolebinding serviceaccounts-cluster-admin \
+  --clusterrole=cluster-admin \
+  --group=system:serviceaccounts
+
+
+# Display the current-context
+
+
+minikube dashboard
+```
+
+
+# Components of a k8 cluster
+
+* kubelet
+* apiserver
+* proxy
+* controller-manager
+* etcd
+* scheduler
+
+# Terms
+
+* `Role`: In the RBAC API, a role contains rules that represent a set of permissions. Permissions are purely additive (there are no “deny” rules). A role can be defined within a namespace with a `Role`, or cluster-wide with a `ClusterRole`.
+
+Example Role:
+
+```
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: default
+  name: pod-reader
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+```
+
+* `ClusterRole`: can be used to grant the same permissions as a `Role`, but because they are cluster-scoped, they can also be used to grant access to:
+
+  * cluster-scoped resources (like nodes)
+  * non-resource endpoints (like “/healthz”)
+  * namespaced resources (like pods) across all namespaces (needed to run kubectl get pods --all-namespaces, for example)
+
+Example ClusterRole:
+
+```
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  # "namespace" omitted since ClusterRoles are not namespaced
+  name: secret-reader
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "watch", "list"]
+```
+
+* `RoleBinding and ClusterRoleBinding`: A role binding grants the permissions defined in a role to a user or set of users. It holds a list of subjects (users, groups, or service accounts), and a reference to the role being granted. Permissions can be granted within a namespace with a `RoleBinding`, or cluster-wide with a `ClusterRoleBinding`. A `RoleBinding` may reference a Role in the same namespace.
+
+Example RoleBinding:
+
+```
+# This role binding allows "jane" to read pods in the "default" namespace.
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: read-pods
+  namespace: default
+subjects:
+- kind: User
+  name: jane # Name is case sensitive
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role #this must be Role or ClusterRole
+  name: pod-reader # this must match the name of the Role or ClusterRole you wish to bind to
+  apiGroup: rbac.authorization.k8s.io
+```
+
+* `ClusterRoleBinding`: Finally, a `ClusterRoleBinding` may be used to grant permission at the cluster level and in all namespaces.
+
+
+
+Example ClusterRoleBinding:
+
+```
+# This cluster role binding allows anyone in the "manager" group to read secrets in any namespace.
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: read-secrets-global
+subjects:
+- kind: Group
+  name: manager # Name is case sensitive
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+
+
+
+`Service Account`: A service account provides an identity for processes that run in a Pod. [more](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) When you (a human) access the cluster (for example, using kubectl), you are authenticated by the apiserver as a particular User Account (currently this is usually admin, unless your cluster administrator has customized your cluster). Processes in containers inside pods can also contact the apiserver. When they do, they are authenticated as a particular Service Account (for example, default).
+
+
+# helpers ( Install in dotfiles )
+
+```
+# kubectl and seeing (cluster)roles assigned to subjects
+# SOURCE: https://stackoverflow.com/questions/43186611/kubectl-and-seeing-clusterroles-assigned-to-subjects
+
+# $1 is kind (User, Group, ServiceAccount)
+# $2 is name ("system:nodes", etc)
+# $3 is namespace (optional, only applies to kind=ServiceAccount)
+function getRoles() {
+    local kind="${1}"
+    local name="${2}"
+    local namespace="${3:-}"
+
+    kubectl get clusterrolebinding -o json | jq -r "
+      .items[]
+      |
+      select(
+        .subjects[]?
+        |
+        select(
+            .kind == \"${kind}\"
+            and
+            .name == \"${name}\"
+            and
+            (if .namespace then .namespace else \"\" end) == \"${namespace}\"
+        )
+      )
+      |
+      (.roleRef.kind + \"/\" + .roleRef.name)
+    "
+}
+
+$ getRoles Group system:authenticated
+ClusterRole/system:basic-user
+ClusterRole/system:discovery
+
+$ getRoles ServiceAccount attachdetach-controller kube-system
+ClusterRole/system:controller:attachdetach-controller
+```
 
 
 # Resources:
