@@ -20,3 +20,5 @@ learning kubernetes
 - https://github.com/ramitsurana/awesome-kubernetes
 - https://blog.sourcerer.io/a-kubernetes-quick-start-for-people-who-know-just-enough-about-docker-to-get-by-71c5933b4633
 - http://127.0.0.1:63569/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/#!/overview?namespace=default
+- https://medium.com/logojoy-engineering/the-worlds-longest-wordpress-deployment-5eda086bbc62
+- https://itnext.io/kubernetes-base-config-for-nginx-ingress-cert-manager-helm-tiller-edf5645e04ef
