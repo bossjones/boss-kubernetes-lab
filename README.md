@@ -5,7 +5,7 @@ learning kubernetes
 
 # Resources:
 
-
+- https://itnext.io/kubernetes-base-config-for-nginx-ingress-cert-manager-helm-tiller-edf5645e04ef
 - QUICKSTART: https://gist.github.com/F21/08bfc2e3592bed1e931ec40b8d2ab6f5
 - https://docs.helm.sh/using_helm/#role-based-access-control
 - https://kubernetes.io/docs/reference/access-authn-authz/rbac/#service-account-permissions
