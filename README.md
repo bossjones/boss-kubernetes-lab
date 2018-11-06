@@ -99,7 +99,7 @@ minikube dashboard
 
 # Components of a k8 cluster
 
-* kubelet
+* `kubelet`: The Kubelet acts as a bridge between the Kubernetes master and the nodes. It manages the pods and containers running on a machine. Kubelet translates each pod into its constituent containers and fetches individual container usage statistics from cAdvisor. It then exposes the aggregated pod resource usage statistics via a REST API.
 * apiserver
 * proxy
 * controller-manager
@@ -284,3 +284,7 @@ ClusterRole/system:controller:attachdetach-controller
 - http://127.0.0.1:63569/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/#!/overview?namespace=default
 - https://medium.com/logojoy-engineering/the-worlds-longest-wordpress-deployment-5eda086bbc62
 - https://itnext.io/kubernetes-base-config-for-nginx-ingress-cert-manager-helm-tiller-edf5645e04ef
+
+
+# Demo repos
+- [LevelUpEducation/kubernetes-demo](git@github.com:LevelUpEducation/kubernetes-demo.git)
