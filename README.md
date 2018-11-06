@@ -61,7 +61,7 @@ source <(helm completion bash)
 
 ```
 # start up minikube
-minikube start --vm-driver="vmwarefusion" --cpus=4 --memory=6000 --v=7 --extra-config=apiserver.Authorization.Mode=RBAC --alsologtostderr
+minikube start --vm-driver="vmwarefusion" --cpus=4 --memory=6000 --v=7 --alsologtostderr
 
 # See which subjects a cluster role is applied
 kubectl get clusterrolebindings system:node --all-namespaces -o json
@@ -105,6 +105,14 @@ minikube dashboard
 * controller-manager
 * etcd
 * scheduler
+
+# Basics
+
+| Term          | Definition    |
+| ------------- |:-------------:|
+|deployments| High-level construct that define an application|
+|pods| Instances of a container in a deployment|
+|services| Endpoints that export ports to the outside world|
 
 # Terms
 
@@ -244,6 +252,17 @@ ClusterRole/system:controller:attachdetach-controller
 * PersistentVolumes: https://kubernetes.io/docs/concepts/storage/volumes/
 * ConfigMaps: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
 * Nodes: https://kubernetes.io/docs/concepts/architecture/nodes/
+
+
+# Example configs you'll need to bring up an app on k8
+
+```
+- namespace config
+- 1 persistent volume config
+- 2 deployment configs (MySQL + WordPress)
+- 2 service configs (MySQL + WordPress)
+- 1 ingress config
+```
 
 
 # Resources:
