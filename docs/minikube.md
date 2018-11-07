@@ -54,3 +54,12 @@ service/kubernetes-dashboard   ClusterIP   10.96.13.213    <none>        80/TCP 
 service/tiller-deploy          ClusterIP   10.98.235.220   <none>        44134/TCP       7m
 ```
 
+# Delete everything
+
+```
+minikube stop;
+minikube delete;
+rm -rf ~/.minikube .kube;
+brew uninstall kubectl;
+brew cask uninstall docker virtualbox minikube;
+```

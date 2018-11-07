@@ -88,3 +88,18 @@ happy-panda   	2      	Wed Sep 28 12:47:54 2016       	DELETED        	mariadb-0
 inky-cat       	1      	Wed Sep 28 12:59:46 2016       	DEPLOYED       	alpine-0.1.0
 kindred-angelf 	2      	Tue Sep 27 16:16:10 2016       	DELETED        	alpine-0.1.0
 ```
+
+
+# helm install
+
+`helm install stable/redis`
+
+**NOTE: Unlike cloud platforms, Minikube doesn’t support a load balancer so, if you’re deploying the application on Minikube, use the command below instead**
+
+```
+# NOTE: IMPORTANT: When deploying on Minikube, you may see errors such as CrashLoopBackOff and your application may fail to start. This is typically an indication that the cluster does not have sufficient memory available to it. To resolve this error, make more resources available to the cluster (we recommend a minimum of 3 GB RAM) and try again.
+
+
+# I believe this exposes it to the outside
+helm install stable/redis --set serviceType=NodePort
+````
