@@ -285,6 +285,19 @@ ClusterRole/system:controller:attachdetach-controller
 - https://medium.com/logojoy-engineering/the-worlds-longest-wordpress-deployment-5eda086bbc62
 - https://itnext.io/kubernetes-base-config-for-nginx-ingress-cert-manager-helm-tiller-edf5645e04ef
 
+Wednesday:
+
+- https://itnext.io/automated-tls-with-cert-manager-and-letsencrypt-for-kubernetes-7daaa5e0cae4
+
+- https://medium.com/oracledevs/secure-your-kubernetes-services-using-cert-manager-nginx-ingress-and-lets-encrypt-888c8b996260
+
+- https://github.com/containous/whoami
+
+- https://github.com/hartzler/hello-minikube
+
+- https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+
+
 
 # Demo repos
 - [LevelUpEducation/kubernetes-demo](git@github.com:LevelUpEducation/kubernetes-demo.git)
