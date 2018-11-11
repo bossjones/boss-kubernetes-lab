@@ -28,7 +28,7 @@ minikube dashboard
 
 Here's an example start up command for Windows 10. You'll need to have the "My_Virtual_Switch" set up before this first command - see [blog](https://blogs.msdn.microsoft.com/wasimbloch/2017/01/23/setting-up-kubernetes-on-windows10-laptop-with-minikube/):
 ```bash
-minikube start --vm-driver="vmware" --cpus=4 --memory=6000  --v=7 --alsologtostderr
+minikube start --vm-driver="vmwarefusion" --cpus=4 --memory=6000  --v=7 --alsologtostderr
 ```
 This downloads a Linux ISO and installs it in your Hyper V Manager. You should see a _minikube_ VM, after it's installed. It also installs all the required software in that VM, to simulate a Kubernetes cluster.
 You may need to add the ```--extra-config=kubelet.ImagePullProgressDeadline=30m0s``` parameter to your start command, as the docker images are rather big.
