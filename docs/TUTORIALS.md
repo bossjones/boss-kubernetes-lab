@@ -1,0 +1,15 @@
+* http://www.devoperandi.com/logging-kafka-topic-by-kubernetes-namespace/
+* https://www.datadoghq.com/blog/monitoring-kubernetes-era/
+* https://sysdig.com/blog/monitoring-kubernetes-with-sysdig-cloud/
+* https://sysdig.com/blog/kubernetes-security-guide/
+* https://dev.to/petermbenjamin/kubernetes-security-best-practices-hlk
+* https://linoxide.com/containers/create-use-kubernetes-secrets/
+* https://solinea.com/blog/deploying-kubernetes-ansible-terraform
+* https://kubernetes.io/docs/tutorials/
+* https://github.com/lachie83/croc-hunter/blob/master/Jenkinsfile
+* https://github.com/grafana/kubernetes-app
+* https://github.com/astefanutti/kubebox
+* https://github.com/johanhaleby/kubetail
+* https://github.com/bitnami-labs/kubewatch
+* https://github.com/stakater/IngressMonitorController
+* https://github.com/pulumi/kubespy
