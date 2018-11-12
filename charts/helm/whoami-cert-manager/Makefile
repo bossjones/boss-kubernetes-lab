@@ -18,7 +18,8 @@ create-cluster-issuer:
 	kubectl create -f letsencrypt-clusterissuer-staging.yaml
 
 helm-deploy-whoami:
-	helm install --name whoami-example -f ./example-whoami
+#	helm install --name whoami-example -f ./deploy/example-whoami
+	helm install --name whoami-example ./deploy/example-whoami
 
 # kubectl delete pod,service,ingress
 

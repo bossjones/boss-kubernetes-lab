@@ -1,9 +1,9 @@
 ---
 ingress:
   name: whoami-ingress
-
 domainName: example-whoami.hyenaclan.org
-ingressClass: nginx
+# ingressClass: nginx
+ingressClass: traefik
 certIssuer: letsencrypt-staging
 certSecret: example-whoami-crt
 
@@ -12,7 +12,6 @@ app:
   port: 80
   labels:
     microservice: whoami
-
 rbac:
   # Specifies whether RBAC resources should be created
   create: true

@@ -46,3 +46,12 @@ minikube-ingress:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml; \
 	@minikube addons enable ingress; \
 	kubectl get pods -n kube-system | grep nginx-ingress-controller
+
+addons:
+	# @helm install stable/heapster --name heapster --set rbac.create=true
+	# --set rbac.create=true
+	minikube addons enable heapster
+	minikube addons enable ingress
+
+# find-invalid-utf8-chacters:
+# 	grep [^\x00-\x7f]
