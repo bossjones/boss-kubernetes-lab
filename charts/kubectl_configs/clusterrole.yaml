@@ -1,15 +1,44 @@
 # SOURCE: https://docs.bitnami.com/kubernetes/get-started-kubernetes/#step-4-install-helm-and-tiller
+# USAGE: kubectl create -f clusterrole.yaml
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tiller
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+    name: cluster-admin
     annotations:
       rbac.authorization.kubernetes.io/autoupdate: "true"
     labels:
       kubernetes.io/bootstrapping: rbac-defaults
-      name: cluster-admin
 rules:
-- apiGroups: ['*']
-  resources: ['*']
-  verbs: ['*']
-- nonResourceURLs: ['*']
-  verbs: ['*']
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- nonResourceURLs:
+  - '*'
+  verbs:
+  - '*'
+---
+# kubectl get serviceAccounts ( should list only default )
+# kubectl create serviceaccount -n kube-system tiller
+# kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: tiller-cluster-rule
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole  #this must be Role or ClusterRole
+  name: cluster-admin # this must match the name of the Role or ClusterRole you wish to bind to
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: ServiceAccount
+  name: tiller
