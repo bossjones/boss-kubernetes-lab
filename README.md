@@ -114,6 +114,14 @@ minikube dashboard
 |pods| Instances of a container in a deployment|
 |services| Endpoints that export ports to the outside world|
 
+# Specific k8 terminology
+
+| Term          | Definition    |
+| ------------- |:-------------:|
+|labels| Labels are the mechanism you use to organize Kubernetes objects. A label is a key-value pair with certain restrictions concerning length and allowed values but without any pre-defined meaning. So you’re free to choose labels as you see fit, for example, to express environments such as ‘this pod is running in production’ or ownership, like ‘department X owns that pod’.|
+|annotations|You can use Kubernetes annotations to attach arbitrary non-identifying metadata to objects. Clients such as tools and libraries can retrieve this metadata.|
+
+
 # Terms
 
 * `Role`: In the RBAC API, a role contains rules that represent a set of permissions. Permissions are purely additive (there are no “deny” rules). A role can be defined within a namespace with a `Role`, or cluster-wide with a `ClusterRole`.

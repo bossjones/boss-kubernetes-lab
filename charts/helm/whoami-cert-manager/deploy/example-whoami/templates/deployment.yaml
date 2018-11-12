@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: quay.io/jessgreb/example-nodejs:latest
+        image: containous/whoami:latest
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:

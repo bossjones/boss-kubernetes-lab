@@ -4,10 +4,12 @@ kind: Service
 metadata:
   name: "{{ .Values.app.name }}"
 spec:
-  type: ClusterIP 
+  type: ClusterIP
   ports:
     - name: http
-      port: "{{ .Values.app.port }}" 
+      port: "{{ .Values.app.port }}"
       targetPort: "{{ .Values.app.port }}"
+      # SOURCE: https://blog.cloudflare.com/minikube-cloudflare/
+      nodePort: 32080
   selector:
     app: "{{ .Values.app.name }}"
