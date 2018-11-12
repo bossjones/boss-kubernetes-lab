@@ -2,8 +2,8 @@
 ingress:
   name: whoami-ingress
 domainName: example-whoami.hyenaclan.org
-# ingressClass: nginx
-ingressClass: traefik
+ingressClass: nginx
+# ingressClass: traefik
 certIssuer: letsencrypt-staging
 certSecret: example-whoami-crt
 
