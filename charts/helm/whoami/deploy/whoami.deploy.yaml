@@ -1,0 +1,24 @@
+# https://medium.com/@awkwardferny/getting-started-with-kubernetes-ingress-nginx-on-minikube-d75e58f52b6c
+
+# USAGE: kubectl apply -f echoserver.deploy.yaml
+# kubectl get deploy
+# kubectl get pods
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zeke
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zeke
+  template:
+    metadata:
+      labels:
+        app: zeke
+    spec:
+      containers:
+      - name: zeke
+        image: containous/whoami
+        ports:
+        - containerPort: 80
