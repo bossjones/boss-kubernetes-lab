@@ -1,0 +1,12 @@
+---
+ingress:
+  name: myapp-ingress
+
+domainName: example-whoami.hyenaclan.org
+ingressClass: nginx
+certIssuer: letsencrypt-staging
+certSecret: example-whoami-crt
+
+app:
+  name: example-whoami
+  port: 8080
