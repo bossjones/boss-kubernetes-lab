@@ -274,7 +274,7 @@ ClusterRole/system:controller:attachdetach-controller
 
 
 # Resources:
-
+- NEEDED FOR HOMELAB: https://joshrendek.com/2018/04/kubernetes-on-bare-metal/
 - which api versions to use: https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
 - https://blog.sourcerer.io/a-kubernetes-quick-start-for-people-who-know-just-enough-about-docker-to-get-by-71c5933b4633
 - https://itnext.io/kubernetes-base-config-for-nginx-ingress-cert-manager-helm-tiller-edf5645e04ef

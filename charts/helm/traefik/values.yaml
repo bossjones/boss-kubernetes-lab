@@ -1,6 +1,6 @@
 serviceType: NodePort
 externalTrafficPolicy: Cluster
-replicas: 2
+replicas: 1
 # cpuRequest: 10m
 # memoryRequest: 20Mi
 # cpuLimit: 100m
