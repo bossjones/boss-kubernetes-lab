@@ -69,6 +69,41 @@ lint-prometheus:
 describe-prometheus:
 	kubectl describe ing prometheus
 
+
+####################################################################
+# influxdb
+####################################################################
+
+helm-upgrade-influxdb:
+	helm upgrade --debug ./influxdb; \
+	helm ls -a
+
+# SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
+helm-deploy-influxdb:
+	helm install --debug -n influxdb ./influxdb; \
+	helm ls -a
+
+helm-purge-influxdb:
+	helm delete --purge influxdb || (exit 1); \
+	kubectl delete pvc -l release=influxdb; \
+	helm ls -a
+
+helm-dry-run-influxdb:
+	helm install --dry-run --debug -n influxdb ./influxdb | pygmentize -l yaml
+
+yamllint-influxdb:
+	@echo "Running YAML Lint Script:"
+	@echo "YAML audit"
+	@yamllint --version
+	bash -c "find ${PWD}/influxdb -type f -name '*.y*ml' -print0 | xargs -I FILE -t -0 -n1 yamllint FILE"
+
+lint-influxdb:
+	helm lint ./influxdb
+
+describe-influxdb:
+	kubectl describe ing influxdb
+
+
 ### nginx-ingress
 
 # debug-nginx-ingress:
