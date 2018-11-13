@@ -42,6 +42,9 @@ debug-nginx-ingress-resource-events:
 	kubectl get svc --all-namespaces; \
 	kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
 
+describe-nginx-welcome:
+	kubectl describe ing nginx-welcome
+
 # SOURCE: https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/PREREQUISITES.md
 generate-tls-certs:
 	cd _certs; \
