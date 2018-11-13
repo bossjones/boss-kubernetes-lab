@@ -81,3 +81,6 @@ generate-client-intermediate-from-ca:
 	# $ kubectl create secret generic caingress --namespace=default --from-file=ca.crt=<ca.crt> --from-file=tls.crt=<tls.crt> --from-file=tls.key=<tls.key>
 
 generate-all-openssl-certs: generate-tls-certs generate-ca-certs generate-client-certs generate-client-intermediate-from-ca
+
+open-nginx-ingress:
+	minikube service nginx-ingress --url

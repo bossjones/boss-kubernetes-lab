@@ -275,6 +275,7 @@ ClusterRole/system:controller:attachdetach-controller
 
 # Resources:
 
+- which api versions to use: https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
 - https://blog.sourcerer.io/a-kubernetes-quick-start-for-people-who-know-just-enough-about-docker-to-get-by-71c5933b4633
 - https://itnext.io/kubernetes-base-config-for-nginx-ingress-cert-manager-helm-tiller-edf5645e04ef
 - QUICKSTART: https://gist.github.com/F21/08bfc2e3592bed1e931ec40b8d2ab6f5

@@ -10,7 +10,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ include "nginx-welcome.fullname" . }}
-  namespace: {{ include "nginx-welcome.name" . }}
+  # namespace: {{ include "nginx-welcome.name" . }}
   labels:
     app.kubernetes.io/name: {{ include "nginx-welcome.name" . }}
     helm.sh/chart: {{ include "nginx-welcome.chart" . }}
