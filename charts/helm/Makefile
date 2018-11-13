@@ -7,6 +7,11 @@ __check_defined = \
 
 list_allowed_args := name
 
+
+####################################################################
+# nginx-welcome
+####################################################################
+
 # SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
 helm-deploy-nginx-welcome:
 	helm install --debug -n nginx-welcome ./nginx-welcome; \
@@ -28,10 +33,40 @@ yamllint-nginx-welcome:
 lint-nginx-welcome:
 	helm lint ./nginx-welcome
 
+describe-nginx-welcome:
+	kubectl describe ing nginx-welcome
+
+####################################################################
+# prometheus
+####################################################################
+
+# SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
+helm-deploy-prometheus:
+	helm install --debug -n prometheus ./prometheus; \
+	helm ls -a
+
+helm-purge-prometheus:
+	helm delete --purge prometheus || (exit 1); \
+	helm ls -a
+
+helm-dry-run-prometheus:
+	helm install --dry-run --debug -n prometheus ./prometheus | pygmentize -l yaml
+
+yamllint-prometheus:
+	@echo "Running YAML Lint Script:"
+	@echo "YAML audit"
+	@yamllint --version
+	bash -c "find ${PWD}/prometheus -type f -name '*.y*ml' -print0 | xargs -I FILE -t -0 -n1 yamllint FILE"
+
+lint-prometheus:
+	helm lint ./prometheus
+
+describe-prometheus:
+	kubectl describe ing prometheus
 
 ### nginx-ingress
 
-debug-nginx-ingress:
+# debug-nginx-ingress:
 
 # kubectl logs -n ingress-nginx nginx-ingress-controller-f88c75bc6-4xkfw
 debug-nginx-ingress-resource-events:
@@ -41,9 +76,6 @@ debug-nginx-ingress-resource-events:
 	echo "Check if used service exists"; \
 	kubectl get svc --all-namespaces; \
 	kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
-
-describe-nginx-welcome:
-	kubectl describe ing nginx-welcome
 
 # SOURCE: https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/PREREQUISITES.md
 generate-tls-certs:
