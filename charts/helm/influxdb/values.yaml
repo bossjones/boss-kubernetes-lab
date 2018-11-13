@@ -1,4 +1,6 @@
 # SERVICE NAME: http://influxdb-influxdb.default:8086
+rbac:
+  create: true
 
 ## influxdb image version
 ## ref: https://hub.docker.com/r/library/influxdb/tags/
