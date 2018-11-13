@@ -40,6 +40,10 @@ describe-nginx-welcome:
 # prometheus
 ####################################################################
 
+helm-upgrade-prometheus:
+	helm upgrade --debug ./prometheus; \
+	helm ls -a
+
 # SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
 helm-deploy-prometheus:
 	helm install --debug -n prometheus ./prometheus; \
@@ -47,6 +51,7 @@ helm-deploy-prometheus:
 
 helm-purge-prometheus:
 	helm delete --purge prometheus || (exit 1); \
+	kubectl delete pvc -l release=prometheus; \
 	helm ls -a
 
 helm-dry-run-prometheus:

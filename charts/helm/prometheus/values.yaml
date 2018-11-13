@@ -207,7 +207,7 @@ alertmanager:
   service:
     annotations: {}
     labels: {}
-    clusterIP: ""
+    # clusterIP: ""
 
     ## Enabling peer mesh service end points for enabling the HA alert manager
     ## Ref: https://github.com/prometheus/alertmanager/blob/master/README.md
@@ -355,7 +355,8 @@ kubeStateMetrics:
 
     # Exposed as a headless service:
     # https://kubernetes.io/docs/concepts/services-networking/service/#headless-services
-    clusterIP: None
+    # DISABLED # clusterIP: None
+    # clusterIP: ""
 
     ## List of IP addresses at which the kube-state-metrics service is available
     ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
@@ -481,7 +482,7 @@ nodeExporter:
 
     # Exposed as a headless service:
     # https://kubernetes.io/docs/concepts/services-networking/service/#headless-services
-    clusterIP: None
+    # clusterIP: None
 
     ## List of IP addresses at which the node-exporter service is available
     ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
@@ -715,7 +716,7 @@ server:
   service:
     annotations: {}
     labels: {}
-    clusterIP: ""
+    # clusterIP: ""
 
     ## List of IP addresses at which the Prometheus server service is available
     ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
@@ -844,7 +845,7 @@ pushgateway:
     annotations:
       prometheus.io/probe: pushgateway
     labels: {}
-    clusterIP: ""
+    # clusterIP: ""
 
     ## List of IP addresses at which the pushgateway service is available
     ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
