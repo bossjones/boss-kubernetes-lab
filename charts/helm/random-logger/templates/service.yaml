@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "random-logger.fullname" . }}
+  # namespace: {{ include "random-logger.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "random-logger.name" . }}
+    helm.sh/chart: {{ include "random-logger.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{ include "random-logger.fullname" . }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      # targetPort: http
+      targetPort: {{ .Values.service.port }}
+      protocol: TCP
+      name: http
+      # containerPort: 8080
+      # nodePort: 30123
+  selector:
+    app.kubernetes.io/name: {{ include "random-logger.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ include "random-logger.fullname" . }}
