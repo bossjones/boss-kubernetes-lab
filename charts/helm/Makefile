@@ -49,7 +49,7 @@ describe-nginx-welcome:
 generate-tls-certs:
 	cd _certs; \
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"; \
-	kubectl create secret tls tls-secret --key tls.key --cert tls.crt
+	kubectl create secret tls tls-secret-nginxsvc --key tls.key --cert tls.crt
 
 # NOTE: This will generate two files: A private key (ca.key) and a public key (ca.crt). This CA is valid for 10000 days. The ca.crt can be used later in the step of creation of CA authentication secret.
 generate-ca-certs:
