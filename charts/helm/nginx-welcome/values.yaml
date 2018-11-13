@@ -6,8 +6,10 @@ replicaCount: 1
 
 image:
   repository: nginx
-  tag: stable
+  tag: latest
   pullPolicy: IfNotPresent
+labels:
+
 
 nameOverride: ""
 fullnameOverride: ""
@@ -22,10 +24,16 @@ service:
 
 ingress:
   enabled: true
+  # IMPORTANT: !!!! tip Annotation keys and values can only be strings. Other types, such as boolean or numeric values must be quoted, i.e. "true", "false", "100".
   annotations:
-    kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
-  path: /
+    # SOURCE: https://github.com/nginxinc/kubernetes-ingress/tree/master/examples/multiple-ingress-controllers
+    # NOTE: To designate that a particular Ingress resource must be handled only by the NGINX or NGINX Plus controller add the following annotation along with the value to the Ingress resource:
+    kubernetes.io/ingress.class: 'nginx'
+    kubernetes.io/tls-acme: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+  path: /welcome
   hosts:
     # - nginx-welcome.hyenaclan.org
     - nginx-welcome.scarlettlab.home
@@ -54,3 +62,4 @@ affinity: {}
 
 rbac:
   create: true
+  # serviceAccountName: default

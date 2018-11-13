@@ -5,6 +5,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
+  namespace: {{ include "nginx-welcome.name" . }}
   labels:
     app.kubernetes.io/name: {{ include "nginx-welcome.name" . }}
     helm.sh/chart: {{ include "nginx-welcome.chart" . }}
