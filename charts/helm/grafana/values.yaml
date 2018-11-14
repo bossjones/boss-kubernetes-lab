@@ -150,6 +150,8 @@ affinity: {}
 #   annotations: {}
 #   subPath: ""
 #   existingClaim:
+# FIXME: pod has unbound PersistentVolumeClaims
+# SOURCE: https://stackoverflow.com/questions/52668938/pod-has-unbound-persistentvolumeclaims
 persistence:
   ## If true, Grafana server will create/use a Persistent Volume Claim
   ## If false, use emptyDir
@@ -178,7 +180,8 @@ persistence:
 
   # Another example: "nfs-provisioner"
   # SOURCE: https://github.com/choerodon/website/blob/c6007070feabea453a47c781d308cf35e20ef60c/content/docs/installation-configuration/steps/operation/monitoring.md
-  storageClassName: default
+  # NOTE: A PersistentVolume without StorageClass is considered to be static. "Dynamic Volume Provisioning" alongside with a StorageClass allows the cluster to provision PersistentVolumes on demand. In order to make that work, the given storage provider must support provisioning - it will then allow the cluster to request the provisioning of a "new" PersistentVolume when an unsatisfied PersistentVolumeClaim pops up.
+  # storageClassName: default
 
   ## Grafana server data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
@@ -203,27 +206,27 @@ adminPassword: password
 # schedulerName:
 
 ## Extra environment variables that will be pass onto deployment pods
-# DISABLED # env: {}
+env: {}
 # SOURCE: https://github.com/kubernetes/heapster/blob/master/deploy/kube-config/influxdb/grafana.yaml
-env:
-  - name: INFLUXDB_HOST
-    value: boss-monitoring-influxdb
-  - name: GF_SERVER_HTTP_PORT
-    value: "3000"
-    # The following env variables are required to make Grafana accessible via
-    # the kubernetes api-server proxy. On production clusters, we recommend
-    # removing these env variables, setup auth for grafana, and expose the grafana
-    # service using a LoadBalancer or a public IP.
-  - name: GF_AUTH_BASIC_ENABLED
-    value: "false"
-  - name: GF_AUTH_ANONYMOUS_ENABLED
-    value: "true"
-  - name: GF_AUTH_ANONYMOUS_ORG_ROLE
-    value: Admin
-  - name: GF_SERVER_ROOT_URL
-    # If you're only using the API Server proxy, set this value instead:
-    # value: /api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
-    value: /
+# env:
+#   - name: INFLUXDB_HOST
+#     value: boss-monitoring-influxdb
+#   - name: GF_SERVER_HTTP_PORT
+#     value: "3000"
+#     # The following env variables are required to make Grafana accessible via
+#     # the kubernetes api-server proxy. On production clusters, we recommend
+#     # removing these env variables, setup auth for grafana, and expose the grafana
+#     # service using a LoadBalancer or a public IP.
+#   - name: GF_AUTH_BASIC_ENABLED
+#     value: "false"
+#   - name: GF_AUTH_ANONYMOUS_ENABLED
+#     value: "true"
+#   - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+#     value: Admin
+#   - name: GF_SERVER_ROOT_URL
+#     # If you're only using the API Server proxy, set this value instead:
+#     # value: /api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
+#     value: /
 
 ## The name of a secret in the same kubernetes namespace which contain values to be added to the environment
 ## This can be useful for auth tokens, etc
