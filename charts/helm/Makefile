@@ -138,6 +138,45 @@ describe-grafana:
 	kubectl describe ing grafana
 
 
+####################################################################
+# prometheus-operator
+####################################################################
+
+helm-upgrade-prometheus-operator:
+	helm upgrade --debug ./prometheus-operator; \
+	helm ls -a
+
+# SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
+helm-deploy-prometheus-operator:
+	helm install --wait --debug -n prometheus-operator ./prometheus-operator; \
+	helm ls -a
+
+helm-purge-prometheus-operator:
+	helm delete --purge prometheus-operator || (exit 1); \
+	kubectl delete pvc -l release=prometheus-operator; \
+	kubectl delete crd prometheuses.monitoring.coreos.com; \
+	kubectl delete crd prometheusrules.monitoring.coreos.com; \
+	kubectl delete crd servicemonitors.monitoring.coreos.com; \
+	kubectl delete crd alertmanagers.monitoring.coreos.com; \
+	helm ls -a
+
+helm-dry-run-prometheus-operator:
+	helm install --wait --dry-run --debug -n prometheus-operator ./prometheus-operator | pygmentize -l yaml
+
+yamllint-prometheus-operator:
+	@echo "Running YAML Lint Script:"
+	@echo "YAML audit"
+	@yamllint --version
+	bash -c "find ${PWD}/prometheus-operator -type f -name '*.y*ml' -print0 | xargs -I FILE -t -0 -n1 yamllint FILE"
+
+lint-prometheus-operator:
+	helm lint ./prometheus-operator
+
+describe-prometheus-operator:
+	kubectl describe ing prometheus-operator
+
+
+
 ### nginx-ingress
 
 # debug-nginx-ingress:
