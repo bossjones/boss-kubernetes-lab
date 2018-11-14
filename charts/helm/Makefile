@@ -114,7 +114,7 @@ helm-upgrade-grafana:
 
 # SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
 helm-deploy-grafana:
-	helm install --wait --debug -n grafana ./grafana; \
+	helm install --wait --timeout 600 --debug -n grafana ./grafana; \
 	helm ls -a
 
 helm-purge-grafana:
@@ -123,7 +123,7 @@ helm-purge-grafana:
 	helm ls -a
 
 helm-dry-run-grafana:
-	helm install --wait --dry-run --debug -n grafana ./grafana | pygmentize -l yaml
+	helm install --wait --timeout 600 --dry-run --debug -n grafana ./grafana | pygmentize -l yaml
 
 yamllint-grafana:
 	@echo "Running YAML Lint Script:"
