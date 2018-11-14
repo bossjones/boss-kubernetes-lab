@@ -3,6 +3,14 @@
 rbac:
   create: true
 
+
+# FIXME: https://github.com/kubernetes/ingress-nginx/issues/3165
+# enable-influxdb: "true"
+# influxdb-measurement: "nginx-reqs"
+# influxdb-port: "8089"
+# influxdb-host: "127.0.0.1"
+# influxdb-server-name: "nginx-ingress"
+
 ## influxdb image version
 ## ref: https://hub.docker.com/r/library/influxdb/tags/
 image:
