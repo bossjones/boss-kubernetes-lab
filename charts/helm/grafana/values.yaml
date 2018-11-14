@@ -1,3 +1,4 @@
+# -------- grafana -----------------------------
 rbac:
   create: true
   pspEnabled: true
@@ -55,10 +56,33 @@ downloadDashboardsImage:
 ##
 service:
   # DISABLED # type: ClusterIP
+  # In a production setup, we recommend accessing Grafana through an external Loadbalancer
+  # or through a public IP.
+  # type: LoadBalancer
+  # You could also use NodePort to expose the service at a randomly-generated port
+  # type: NodePort
   type: NodePort
   port: 80
-  annotations: {}
-  labels: {}
+  # DISABLED # annotations: {}
+  annotations:
+    # SOURCE: https://github.com/nginxinc/kubernetes-ingress/tree/master/examples/multiple-ingress-controllers
+    # NOTE: To designate that a particular Ingress resource must be handled only by the NGINX or NGINX Plus controller add the following annotation along with the value to the Ingress resource:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    # Note the nginx.ingress.kubernetes.io/ssl-redirect annotation. It is used since we are not specifying a host. When no host is specified, then the default-server is hit, which is configured with a self-signed certificate, and redirects http to https. This issue explains more.
+    # https://github.com/kubernetes/ingress-nginx/issues/1567
+    nginx.ingress.kubernetes.io/ssl-redirect: \"false\"
+    # SOURCE: https://medium.com/@Oskarr3/setting-up-ingress-on-minikube-6ae825e98f82
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  #   kubernetes.io/ingress.class: nginx
+  #   kubernetes.io/tls-acme: 'true'
+  # DISABLED # labels: {}
+  labels:
+    task: monitoring
+    k8s-app: grafana
 
 ingress:
   enabled: true
@@ -179,7 +203,27 @@ adminPassword: password
 # schedulerName:
 
 ## Extra environment variables that will be pass onto deployment pods
-env: {}
+# DISABLED # env: {}
+# SOURCE: https://github.com/kubernetes/heapster/blob/master/deploy/kube-config/influxdb/grafana.yaml
+env:
+  - name: INFLUXDB_HOST
+    value: boss-monitoring-influxdb
+  - name: GF_SERVER_HTTP_PORT
+    value: "3000"
+    # The following env variables are required to make Grafana accessible via
+    # the kubernetes api-server proxy. On production clusters, we recommend
+    # removing these env variables, setup auth for grafana, and expose the grafana
+    # service using a LoadBalancer or a public IP.
+  - name: GF_AUTH_BASIC_ENABLED
+    value: "false"
+  - name: GF_AUTH_ANONYMOUS_ENABLED
+    value: "true"
+  - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+    value: Admin
+  - name: GF_SERVER_ROOT_URL
+    # If you're only using the API Server proxy, set this value instead:
+    # value: /api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
+    value: /
 
 ## The name of a secret in the same kubernetes namespace which contain values to be added to the environment
 ## This can be useful for auth tokens, etc
@@ -220,6 +264,33 @@ plugins:
 ## ref: http://docs.grafana.org/administration/provisioning/#datasources
 ##
 datasources: {}
+# TODO: Enable all of this
+# datasources:
+#   apiVersion: 1
+#   datasources:
+#     - name: InfluxDB
+#       type: influxdb
+#       access: proxy
+#       url: http://influxdb:8086
+#       user: devnet
+#       password: create
+#       database: ezdash
+#       isDefault: true
+#     - name: ElasticSearch
+#       type: elasticsearch
+#       access: proxy
+#       url: http://elasticsearch:9200
+#       user: elastic
+#       password: changeme
+#       database: metricbeat-*
+#       jsonData:
+#         esVersion: "56"
+#         timeField: "@timestamp"
+#         timeInterval: "5s"
+#     - name: Prometheus
+#       type: prometheus
+#       access: proxy
+#       url: http://prometheus:9090
 #  datasources.yaml:
 #    apiVersion: 1
 #    datasources:

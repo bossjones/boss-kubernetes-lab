@@ -14,7 +14,7 @@ list_allowed_args := name
 
 # SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
 helm-deploy-nginx-welcome:
-	helm install --debug -n nginx-welcome ./nginx-welcome; \
+	helm install --wait --debug -n nginx-welcome ./nginx-welcome; \
 	helm ls -a
 
 helm-purge-nginx-welcome:
@@ -22,7 +22,7 @@ helm-purge-nginx-welcome:
 	helm ls -a
 
 helm-dry-run-nginx-welcome:
-	helm install --dry-run --debug -n nginx-welcome ./nginx-welcome | pygmentize -l yaml
+	helm install --wait --dry-run --debug -n nginx-welcome ./nginx-welcome | pygmentize -l yaml
 
 yamllint-nginx-welcome:
 	@echo "Running YAML Lint Script:"
@@ -46,7 +46,7 @@ helm-upgrade-prometheus:
 
 # SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
 helm-deploy-prometheus:
-	helm install --debug -n prometheus ./prometheus; \
+	helm install --wait --debug -n prometheus ./prometheus; \
 	helm ls -a
 
 helm-purge-prometheus:
@@ -55,7 +55,7 @@ helm-purge-prometheus:
 	helm ls -a
 
 helm-dry-run-prometheus:
-	helm install --dry-run --debug -n prometheus ./prometheus | pygmentize -l yaml
+	helm install --wait --dry-run --debug -n prometheus ./prometheus | pygmentize -l yaml
 
 yamllint-prometheus:
 	@echo "Running YAML Lint Script:"
@@ -80,7 +80,7 @@ helm-upgrade-influxdb:
 
 # SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
 helm-deploy-influxdb:
-	helm install --debug -n influxdb ./influxdb; \
+	helm install --wait --debug -n influxdb ./influxdb; \
 	helm ls -a
 
 helm-purge-influxdb:
@@ -89,7 +89,7 @@ helm-purge-influxdb:
 	helm ls -a
 
 helm-dry-run-influxdb:
-	helm install --dry-run --debug -n influxdb ./influxdb | pygmentize -l yaml
+	helm install --wait --dry-run --debug -n influxdb ./influxdb | pygmentize -l yaml
 
 yamllint-influxdb:
 	@echo "Running YAML Lint Script:"
@@ -102,6 +102,40 @@ lint-influxdb:
 
 describe-influxdb:
 	kubectl describe ing influxdb
+
+
+####################################################################
+# grafana
+####################################################################
+
+helm-upgrade-grafana:
+	helm upgrade --debug ./grafana; \
+	helm ls -a
+
+# SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
+helm-deploy-grafana:
+	helm install --wait --debug -n grafana ./grafana; \
+	helm ls -a
+
+helm-purge-grafana:
+	helm delete --purge grafana || (exit 1); \
+	kubectl delete pvc -l release=grafana; \
+	helm ls -a
+
+helm-dry-run-grafana:
+	helm install --wait --dry-run --debug -n grafana ./grafana | pygmentize -l yaml
+
+yamllint-grafana:
+	@echo "Running YAML Lint Script:"
+	@echo "YAML audit"
+	@yamllint --version
+	bash -c "find ${PWD}/grafana -type f -name '*.y*ml' -print0 | xargs -I FILE -t -0 -n1 yamllint FILE"
+
+lint-grafana:
+	helm lint ./grafana
+
+describe-grafana:
+	kubectl describe ing grafana
 
 
 ### nginx-ingress
