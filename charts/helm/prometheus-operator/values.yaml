@@ -231,7 +231,7 @@ alertmanager:
 
     ## 	The external URL the Alertmanager instances will be available under. This is necessary to generate correct URLs. This is necessary if Alertmanager is not served from root of a DNS name.	string	false
     ##
-    externalUrl: 'alertmanager.scarlettlab.home'
+    externalUrl: "alertmanager.scarlettlab.home"
 
     ## 	The route prefix Alertmanager registers HTTP handlers for. This is useful, if using ExternalURL and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true,
     ## but the server serves requests under a different route prefix. For example for use with kubectl proxy.
@@ -340,16 +340,16 @@ grafana:
     ## Must be provided if Ingress is enable.
     ##
     hosts:
-      - prometheus.scarlettlab.home
+      - grafana.scarlettlab.home
     # hosts: []
 
-    ## TLS configuration for prometheus Ingress
+    ## TLS configuration for grafana Ingress
     ## Secret must be manually created in the namespace
     ##
     tls: []
-    # - secretName: prometheus-general-tls
+    # - secretName: grafana-general-tls
     #   hosts:
-    #   - prometheus.example.com
+    #   - grafana.example.com
 
   sidecar:
     dashboards:
@@ -761,7 +761,7 @@ prometheus:
 
     ## External URL at which Prometheus will be reachable.
     ##
-    externalUrl: ""
+    externalUrl: "prometheus.scarlettlab.home"
 
     ## Define which Nodes the Pods are scheduled on.
     ## ref: https://kubernetes.io/docs/user-guide/node-selection/

@@ -149,7 +149,8 @@ helm-upgrade-prometheus-operator:
 # SOURCE: https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/
 helm-deploy-prometheus-operator:
 	helm install --wait --debug -n prometheus-operator ./prometheus-operator; \
-	helm ls -a
+	helm ls -a; \
+	kubectl --namespace default get pods -l "release=prometheus-operator"
 
 helm-purge-prometheus-operator:
 	helm delete --purge prometheus-operator || (exit 1); \
